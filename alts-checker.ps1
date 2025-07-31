@@ -16,28 +16,29 @@ function Decode-Jwt {
 }
 
 function Get-TLauncherProfiles {
-    $path = Join-Path $env:APPDATA '.minecraft\TlauncherProfiles.json'
-    Write-Host "`n══════ TLAUNCHER PROFILES ══════" -ForegroundColor Magenta
-    if (-not (Test-Path $path)) {
-        Write-Host "[!] Profile file not found." -ForegroundColor Yellow; return
+    $file = "$env:APPDATA\.minecraft\TlauncherProfiles.json"
+    if (-not (Test-Path $file)) {
+        Write-Host "TlauncherProfiles.json not found" -ForegroundColor Yellow
+        return
     }
-    $data = Get-Content $path -Raw | ConvertFrom-Json
+
+    $data = Get-Content $file -Raw | ConvertFrom-Json
     foreach ($acc in $data.accounts.PSObject.Properties) {
         $info = $acc.Value
         if ($info.username -and $info.uuid) {
+            $token = $null
             if ($info.microsoftOAuthToken.accessToken) {
-                $token = $info.microsoftOAuthToken.accessToken; $label = "Access Token"
+                $token = $info.microsoftOAuthToken.accessToken
             } elseif ($info.microsoftOAuthToken.id_token) {
-                $token = $info.microsoftOAuthToken.id_token; $label = "ID Token"
-            } else { $token = $null; $label = "" }
+                $token = $info.microsoftOAuthToken.id_token
+            }
 
-            $premium = if ($token) { '✅' } else { '❌' }
-            Write-Host "✔ $($info.displayName) | UUID: $($info.uuid) | Type: $($info.type) | Premium: $premium" -ForegroundColor Green
+            $premium = if ($token) { 'yes' } else { 'no' }
+            Write-Host "$($info.displayName) | UUID: $($info.uuid) | Type: $($info.type) | Premium: $premium" -ForegroundColor Green
 
             if ($token) {
                 $claims = Decode-Jwt $token
                 if ($claims) {
-                    Write-Host "   → $label claims:" -ForegroundColor Cyan
                     $claims | Format-Table -AutoSize
                 }
             }
@@ -46,16 +47,19 @@ function Get-TLauncherProfiles {
 }
 
 function Get-LauncherAccounts {
-    $path = Join-Path $env:APPDATA '.minecraft\launcher_accounts.json'
-    Write-Host "`n══════ LAUNCHER ACCOUNTS ══════" -ForegroundColor Magenta
-    if (-not (Test-Path $path)) {
-        Write-Host "[!] launcher_accounts.json not found." -ForegroundColor Yellow; return
+    $file = "$env:APPDATA\.minecraft\launcher_accounts.json"
+    if (-not (Test-Path $file)) {
+        Write-Host "launcher_accounts.json not found" -ForegroundColor Yellow
+        return
     }
+
     try {
-        $data = Get-Content $path -Raw | ConvertFrom-Json
+        $data = Get-Content $file -Raw | ConvertFrom-Json
         if (-not $data.accounts) {
-            Write-Host "[!] No accounts in launcher_accounts.json." -ForegroundColor Yellow; return
+            Write-Host "No accounts found in launcher_accounts.json" -ForegroundColor Yellow
+            return
         }
+
         foreach ($acc in $data.accounts.PSObject.Properties) {
             $info = $acc.Value
             $uuid = $null
@@ -63,53 +67,59 @@ function Get-LauncherAccounts {
                 $uuid = $info.minecraftProfile.id
             }
             $type = if ($info.type) { $info.type } else { "N/A" }
-            $token = if ($info.accessToken) { '✅' } else { '❌' }
-            Write-Host "→ $($info.username) | UUID: $uuid | Type: $type | Token: $token" -ForegroundColor Green
+            $token = if ($info.accessToken) { 'yes' } else { 'no' }
+            Write-Host "$($info.username) | UUID: $uuid | Type: $type | Token: $token" -ForegroundColor Green
         }
     } catch {
-        Write-Host "[X] Error reading launcher_accounts.json." -ForegroundColor Red
+        Write-Host "Error reading launcher_accounts.json" -ForegroundColor Red
     }
 }
 
 function Get-UsernameCache {
-    $path = Join-Path $env:APPDATA '.minecraft\usernamecache.json'
-    Write-Host "`n══════ USERNAME CACHE ══════" -ForegroundColor Magenta
-    if (-not (Test-Path $path)) {
-        Write-Host "[!] usernamecache.json not found." -ForegroundColor Yellow; return
+    $file = "$env:APPDATA\.minecraft\usernamecache.json"
+    if (-not (Test-Path $file)) {
+        Write-Host "usernamecache.json not found" -ForegroundColor Yellow
+        return
     }
+
     try {
-        $cache = Get-Content $path -Raw | ConvertFrom-Json
-        if (-not $cache) {
-            Write-Host "[!] Empty usernamecache.json." -ForegroundColor Yellow; return
+        $data = Get-Content $file -Raw | ConvertFrom-Json
+        if (-not $data) {
+            Write-Host "Empty usernamecache.json" -ForegroundColor Yellow
+            return
         }
-        foreach ($entry in $cache) {
+
+        foreach ($entry in $data) {
             if ($entry.username -and $entry.uuid) {
-                Write-Host "→ $($entry.username) | UUID: $($entry.uuid)" -ForegroundColor Green
+                Write-Host "$($entry.username) | UUID: $($entry.uuid)" -ForegroundColor Green
             }
         }
     } catch {
-        Write-Host "[X] Error reading usernamecache.json." -ForegroundColor Red
+        Write-Host "Error reading usernamecache.json" -ForegroundColor Red
     }
 }
 
 function Get-UserCache {
-    $path = Join-Path $env:APPDATA '.minecraft\usercache.json'
-    Write-Host "`n══════ USER CACHE ══════" -ForegroundColor Magenta
-    if (-not (Test-Path $path)) {
-        Write-Host "[!] usercache.json not found." -ForegroundColor Yellow; return
+    $file = "$env:APPDATA\.minecraft\usercache.json"
+    if (-not (Test-Path $file)) {
+        Write-Host "usercache.json not found" -ForegroundColor Yellow
+        return
     }
+
     try {
-        $cache = Get-Content $path -Raw | ConvertFrom-Json
-        if (-not $cache) {
-            Write-Host "[!] Empty usercache.json." -ForegroundColor Yellow; return
+        $data = Get-Content $file -Raw | ConvertFrom-Json
+        if (-not $data) {
+            Write-Host "Empty usercache.json" -ForegroundColor Yellow
+            return
         }
-        foreach ($entry in $cache) {
+
+        foreach ($entry in $data) {
             if ($entry.name -and $entry.uuid) {
-                Write-Host "→ $($entry.name) | UUID: $($entry.uuid)" -ForegroundColor Green
+                Write-Host "$($entry.name) | UUID: $($entry.uuid)" -ForegroundColor Green
             }
         }
     } catch {
-        Write-Host "[X] Error reading usercache.json." -ForegroundColor Red
+        Write-Host "Error reading usercache.json" -ForegroundColor Red
     }
 }
 
