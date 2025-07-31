@@ -8,7 +8,6 @@ function Decode-Jwt {
     switch ($payload.Length % 4) {
         2 { $payload += '==' }
         3 { $payload += '=' }
-        default {}
     }
 
     try {
@@ -24,7 +23,7 @@ function Get-TLauncherProfiles {
     Write-Host "`n───────────── TLAUNCHER PROFILES ─────────────" -ForegroundColor Magenta
 
     if (-not (Test-Path $file)) {
-        Write-Host "[!] File not found: TlauncherProfiles.json" -ForegroundColor Yellow
+        Write-Host "[!] TlauncherProfiles.json not found." -ForegroundColor Yellow
         return
     }
 
@@ -35,7 +34,9 @@ function Get-TLauncherProfiles {
         $info = $acc.Value
         if ($info.username -and $info.uuid) {
             $hasToken = $false
-            if ($info.microsoftOAuthToken.accessToken -or $info.microsoftOAuthToken.id_token) {
+            if ($info.microsoftOAuthToken.accessToken) {
+                $hasToken = $true
+            } elseif ($info.microsoftOAuthToken.id_token) {
                 $hasToken = $true
             }
 
@@ -43,8 +44,16 @@ function Get-TLauncherProfiles {
 
             Write-Host "✔ Account: $($info.displayName) | UUID: $($info.uuid) | Type: $($info.type) | Premium: $premium" -ForegroundColor Green
 
-            $token = $info.microsoftOAuthToken.accessToken ?? $info.microsoftOAuthToken.id_token
-            $label = if ($info.microsoftOAuthToken.accessToken) { "Microsoft access token" } else { "Microsoft ID token" }
+            $token = $null
+            $label = ""
+
+            if ($info.microsoftOAuthToken.accessToken) {
+                $token = $info.microsoftOAuthToken.accessToken
+                $label = "Microsoft access token"
+            } elseif ($info.microsoftOAuthToken.id_token) {
+                $token = $info.microsoftOAuthToken.id_token
+                $label = "Microsoft ID token"
+            }
 
             if ($token) {
                 $claims = Decode-Jwt $token
@@ -62,7 +71,7 @@ function Get-LauncherAccounts {
     Write-Host "`n───────────── OFFICIAL LAUNCHER ACCOUNTS ─────────────" -ForegroundColor Magenta
 
     if (-not (Test-Path $file)) {
-        Write-Host "[!] File not found: launcher_accounts.json" -ForegroundColor Yellow
+        Write-Host "[!] launcher_accounts.json not found." -ForegroundColor Yellow
         return
     }
 
@@ -71,20 +80,30 @@ function Get-LauncherAccounts {
         $accounts = $data.accounts.PSObject.Properties
 
         if ($accounts.Count -eq 0) {
-            Write-Host "[!] No accounts found in launcher_accounts.json" -ForegroundColor Yellow
+            Write-Host "[!] No accounts found in launcher_accounts.json." -ForegroundColor Yellow
             return
         }
 
         foreach ($acc in $accounts) {
             $info = $acc.Value
-            $uuid = $info.minecraftProfile?.id
-            $type = $info.type ?? "N/A"
+            $uuid = $null
+
+            if ($info.minecraftProfile -and $info.minecraftProfile.id) {
+                $uuid = $info.minecraftProfile.id
+            }
+
+            if ($info.type) {
+                $type = $info.type
+            } else {
+                $type = "N/A"
+            }
+
             $token = if ($info.accessToken) { '✅' } else { '❌' }
 
             Write-Host "→ $($info.username) | UUID: $uuid | Type: $type | Token: $token" -ForegroundColor Green
         }
     } catch {
-        Write-Host "[X] Failed to read launcher_accounts.json" -ForegroundColor Red
+        Write-Host "[X] Failed to read launcher_accounts.json." -ForegroundColor Red
     }
 }
 
@@ -93,7 +112,7 @@ function Get-UsernameCache {
     Write-Host "`n───────────── USERNAME CACHE ─────────────" -ForegroundColor Magenta
 
     if (-not (Test-Path $file)) {
-        Write-Host "[!] File not found: usernamecache.json" -ForegroundColor Yellow
+        Write-Host "[!] usernamecache.json not found." -ForegroundColor Yellow
         return
     }
 
@@ -101,7 +120,7 @@ function Get-UsernameCache {
         $data = Get-Content $file -Raw | ConvertFrom-Json
 
         if ($data.Count -eq 0) {
-            Write-Host "[!] No entries found in usernamecache.json" -ForegroundColor Yellow
+            Write-Host "[!] No entries found in usernamecache.json." -ForegroundColor Yellow
             return
         }
 
@@ -111,7 +130,7 @@ function Get-UsernameCache {
             }
         }
     } catch {
-        Write-Host "[X] Failed to read usernamecache.json" -ForegroundColor Red
+        Write-Host "[X] Failed to read usernamecache.json." -ForegroundColor Red
     }
 }
 
@@ -120,7 +139,7 @@ function Get-UserCache {
     Write-Host "`n───────────── USER CACHE ─────────────" -ForegroundColor Magenta
 
     if (-not (Test-Path $file)) {
-        Write-Host "[!] File not found: usercache.json" -ForegroundColor Yellow
+        Write-Host "[!] usercache.json not found." -ForegroundColor Yellow
         return
     }
 
@@ -128,7 +147,7 @@ function Get-UserCache {
         $data = Get-Content $file -Raw | ConvertFrom-Json
 
         if (-not $data) {
-            Write-Host "[!] No entries found in usercache.json" -ForegroundColor Yellow
+            Write-Host "[!] No entries found in usercache.json." -ForegroundColor Yellow
             return
         }
 
@@ -138,7 +157,7 @@ function Get-UserCache {
             }
         }
     } catch {
-        Write-Host "[X] Failed to read usercache.json" -ForegroundColor Red
+        Write-Host "[X] Failed to read usercache.json." -ForegroundColor Red
     }
 }
 
