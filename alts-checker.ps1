@@ -2,19 +2,26 @@ function Decode-Jwt {
     param([string]$jwt)
     $parts = $jwt -split '\.'
     if ($parts.Count -ne 3) { return }
-    $payload = $parts[1].Replace('-','+').Replace('_','/')
+    $payload = $parts[1].Replace('-', '+').Replace('_', '/')
     switch ($payload.Length % 4) {
         2 { $payload += '==' }
         3 { $payload += '=' }
         default {}
     }
-    $bytes = [Convert]::FromBase64String($payload)
-    return ([Text.Encoding]::UTF8.GetString($bytes) | ConvertFrom-Json)
+    try {
+        $bytes = [Convert]::FromBase64String($payload)
+        return ([Text.Encoding]::UTF8.GetString($bytes) | ConvertFrom-Json)
+    } catch {
+        return $null
+    }
 }
 
-function Get-TLauncherAccounts {
+function Get-TLauncherProfiles {
     $file = "$env:APPDATA\.minecraft\TlauncherProfiles.json"
-    if (-Not (Test-Path $file)) { return }
+    if (-Not (Test-Path $file)) {
+        Write-Host "[!] TlauncherProfiles.json non trovato." -ForegroundColor Yellow
+        return
+    }
 
     $data = Get-Content $file -Raw | ConvertFrom-Json
     $accounts = $data.accounts.PSObject.Properties
@@ -35,17 +42,43 @@ function Get-TLauncherAccounts {
             if ($info.microsoftOAuthToken.accessToken) {
                 $claims = Decode-Jwt $info.microsoftOAuthToken.accessToken
                 if ($claims) {
-                    Write-Host "    → Microsoft token claims:" -ForegroundColor Cyan
-                    $claims | Format-Table -AutoSize -View Basic
+                    Write-Host "    → Microsoft access token claims:" -ForegroundColor Cyan
+                    $claims | Format-Table -AutoSize
                 }
             } elseif ($info.microsoftOAuthToken.id_token) {
                 $claims = Decode-Jwt $info.microsoftOAuthToken.id_token
                 if ($claims) {
                     Write-Host "    → Microsoft ID token claims:" -ForegroundColor Cyan
-                    $claims | Format-Table -AutoSize -View Basic
+                    $claims | Format-Table -AutoSize
                 }
             }
         }
+    }
+}
+
+function Get-UsernameCacheAccounts {
+    $tlauncherPath = "$env:APPDATA\.minecraft\usernamecache.json"
+    if (-Not (Test-Path $tlauncherPath)) {
+        Write-Host "[!] usernamecache.json non trovato." -ForegroundColor Yellow
+        return
+    }
+
+    try {
+        $data = Get-Content $tlauncherPath -Raw | ConvertFrom-Json
+
+        if ($data.Count -eq 0) {
+            Write-Host "[!] Nessun account trovato in usernamecache.json." -ForegroundColor Yellow
+            return
+        }
+
+        Write-Host "[✓] Trovati $($data.Count) account in usernamecache.json:" -ForegroundColor Cyan
+        foreach ($entry in $data) {
+            if ($entry.username -and $entry.uuid) {
+                Write-Host "    → $($entry.username) | UUID: $($entry.uuid)" -ForegroundColor Green
+            }
+        }
+    } catch {
+        Write-Host "[X] Errore durante la lettura di usernamecache.json." -ForegroundColor Red
     }
 }
 
@@ -69,5 +102,6 @@ function Get-UserCacheAccounts {
         }
 }
 
-Get-TLauncherAccounts
+Get-TLauncherProfiles
+Get-UsernameCacheAccounts
 Get-UserCacheAccounts
