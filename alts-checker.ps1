@@ -142,7 +142,6 @@ function Get-UserCache {
     }
 }
 
-# EXECUTION ENTRYPOINT
 Get-TLauncherProfiles
 Get-LauncherAccounts
 Get-UsernameCache
