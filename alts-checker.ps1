@@ -98,16 +98,18 @@ function Get-LauncherAccounts {
 
         foreach ($entry in $accounts) {
             $acc = $entry.Value
-            $uuid = $acc.uuid
-            $name = $acc.username
+            $username = $acc.username
             $type = $acc.type
-            $displayName = $acc.displayName
             $token = $acc.accessToken
-            $premium = if ($token) { "✅" } else { "❌" }
+            $minecraftProfile = $acc.minecraftProfile
+            $nickname = if ($minecraftProfile.name) { $minecraftProfile.name } else { "N/A" }
+            $uuid = if ($minecraftProfile.id) { $minecraftProfile.id } else { "N/A" }
 
-            Write-Host "    → $displayName | UUID: $uuid | Tipo: $type | Token: $premium" -ForegroundColor Green
+            $premium = if ($token -ne "") { "✅" } else { "❌" }
 
-            if ($token) {
+            Write-Host "    → Username launcher: $username | Minecraft: $nickname | UUID: $uuid | Tipo: $type | Token: $premium" -ForegroundColor Green
+
+            if ($token -ne "") {
                 $claims = Decode-Jwt $token
                 if ($claims) {
                     Write-Host "       → Token claims:" -ForegroundColor Cyan
