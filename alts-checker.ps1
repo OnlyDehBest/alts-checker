@@ -58,7 +58,7 @@ function Get-TLauncherProfiles {
 
             Write-Host ("DisplayName:`t{0}" -f $info.displayName) -ForegroundColor Green
             Write-Host ("UUID:`t`t{0}" -f $info.uuid) -ForegroundColor Gray
-            Write-Host ("Type:`t`t{0}" -f $info.type) -ForegroundColor Yellow
+            Write-Host ("Type:`t`t{0}" -f $info.type) -ForegroundColor Gray
             Write-Host ("Premium:`t{0}`n" -f $premium) -ForegroundColor Green
 
             if ($token) {
@@ -77,7 +77,7 @@ function Get-LauncherAccounts {
         return
     }
 
-    Write-Host "`n--- Launcher Accounts ---`n" -ForegroundColor Cyan
+    Write-Host "`n--- Launcher Accounts ---`n" -ForegroundColor Red
     try {
         $data = Get-Content $file -Raw | ConvertFrom-Json
         if (-not $data.accounts) {
@@ -93,7 +93,7 @@ function Get-LauncherAccounts {
 
             Write-Host ("Username:`t{0}" -f $info.username) -ForegroundColor Green
             Write-Host ("UUID:`t`t{0}" -f $uuid) -ForegroundColor Gray
-            Write-Host ("Type:`t`t{0}" -f $type) -ForegroundColor Yellow
+            Write-Host ("Type:`t`t{0}" -f $type) -ForegroundColor Gray
             Write-Host ("Token:`t{0}`n" -f $token) -ForegroundColor Green
         }
     }
@@ -156,10 +156,10 @@ function Print-Menu {
     Write-Host "                                              ALTS-CHECKER TOOL        " -ForegroundColor Red
     Write-Host "                                       ------------------------------" -ForegroundColor Red
     Write-Host ""
-    Write-Host "                                    1. Open Log Folders" -ForegroundColor Green
-    Write-Host "                                    2. Search Deleted Logs" -ForegroundColor Green
-    Write-Host "                                    3. Show Minecraft Accounts" -ForegroundColor Green
-    Write-Host "                                    4. Exit" -ForegroundColor Green
+    Write-Host "                                    1. Open Log Folders" -ForegroundColor Gray
+    Write-Host "                                    2. Search Deleted Logs" -ForegroundColor Gray
+    Write-Host "                                    3. Show Minecraft Accounts" -ForegroundColor Gray
+    Write-Host "                                    4. Exit" -ForegroundColor Gray
     Write-Host ""
     $choice = Read-Host "                                    Select an option"
     return $choice
