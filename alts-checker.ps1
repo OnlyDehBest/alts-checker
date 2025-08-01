@@ -59,7 +59,7 @@ function Get-TLauncherProfiles {
             Write-Host ("DisplayName:`t{0}" -f $info.displayName) -ForegroundColor Green
             Write-Host ("UUID:`t`t{0}" -f $info.uuid) -ForegroundColor Gray
             Write-Host ("Type:`t`t{0}" -f $info.type) -ForegroundColor Gray
-            Write-Host ("Premium:`t{0}`n" -f $premium) -ForegroundColor Green
+            Write-Host ("Premium:`t{0}`n" -f $premium) -ForegroundColor Gray
 
             if ($token) {
                 $claims = Decode-Jwt $token
@@ -94,7 +94,7 @@ function Get-LauncherAccounts {
             Write-Host ("Username:`t{0}" -f $info.username) -ForegroundColor Green
             Write-Host ("UUID:`t`t{0}" -f $uuid) -ForegroundColor Gray
             Write-Host ("Type:`t`t{0}" -f $type) -ForegroundColor Gray
-            Write-Host ("Token:`t{0}`n" -f $token) -ForegroundColor Green
+            Write-Host ("Token:`t{0}`n" -f $token) -ForegroundColor Gray
         }
     }
     catch {
