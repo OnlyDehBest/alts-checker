@@ -1,14 +1,20 @@
 function Print-AnimatedLogo {
     Clear-Host
-    $padding = " " * 10
-    Write-Host -NoNewline ($padding)
-    Write-Host -ForegroundColor Cyan @"
-                              
-   __ _| | |_ ___        ___| |__   ___  ___| | _____ _ __ 
-  / _` | | __/ __|_____ / __| '_ \ / _ \/ __| |/ / _ \ '__|
- | (_| | | |_\__ \_____| (__| | | |  __/ (__|   <  __/ |   
-  \__,_|_|\__|___/      \___|_| |_|\___|\___|_|\_\___|_|
-"@
+    $width = $Host.UI.RawUI.BufferSize.Width
+
+    $logoLines = @(
+        "   __ _| | |_ ___        ___| |__   ___  ___| | _____ _ __",
+        "  / _` | | __/ __|_____ / __| '_ \ / _ \/ __| |/ / _ \ '__|",
+        " | (_| | | |_\__ \_____| (__| | | |  __/ (__|   <  __/ |   ",
+        "  \__,_|_|\__|___/      \___|_| |_|\___|\___|_|\_\___|_|   ",
+        "",
+        "                   ALTS-CHECKER TOOL"
+    )
+
+    foreach ($line in $logoLines) {
+        $padding = [Math]::Max(0, [int](($width - $line.Length) / 2))
+        Write-Host (" " * $padding + $line) -ForegroundColor Red
+    }
     Start-Sleep -Milliseconds 500
 }
 
@@ -40,7 +46,7 @@ function Get-TLauncherProfiles {
     }
 
     $data = Get-Content $file -Raw | ConvertFrom-Json
-    Write-Host "`n--- TLauncher Profiles ---`n" -ForegroundColor Cyan
+    Write-Host "`n--- TLauncher Profiles ---`n" -ForegroundColor Red
     foreach ($acc in $data.accounts.PSObject.Properties) {
         $info = $acc.Value
         if ($info.username -and $info.uuid) {
@@ -51,8 +57,8 @@ function Get-TLauncherProfiles {
             $premium = if ($token) { 'yes' } else { 'no' }
 
             Write-Host ("DisplayName:`t{0}" -f $info.displayName) -ForegroundColor Green
-            Write-Host ("UUID:`t`t{0}" -f $info.uuid) -ForegroundColor DarkGreen
-            Write-Host ("Type:`t`t{0}" -f $info.type) -ForegroundColor DarkGreen
+            Write-Host ("UUID:`t`t{0}" -f $info.uuid) -ForegroundColor Gray
+            Write-Host ("Type:`t`t{0}" -f $info.type) -ForegroundColor Yellow
             Write-Host ("Premium:`t{0}`n" -f $premium) -ForegroundColor Green
 
             if ($token) {
@@ -86,8 +92,8 @@ function Get-LauncherAccounts {
             $token = if ($info.accessToken) { 'yes' } else { 'no' }
 
             Write-Host ("Username:`t{0}" -f $info.username) -ForegroundColor Green
-            Write-Host ("UUID:`t`t{0}" -f $uuid) -ForegroundColor DarkGreen
-            Write-Host ("Type:`t`t{0}" -f $type) -ForegroundColor DarkGreen
+            Write-Host ("UUID:`t`t{0}" -f $uuid) -ForegroundColor Gray
+            Write-Host ("Type:`t`t{0}" -f $type) -ForegroundColor Yellow
             Write-Host ("Token:`t{0}`n" -f $token) -ForegroundColor Green
         }
     }
@@ -103,7 +109,7 @@ function Get-UsernameCache {
         return
     }
 
-    Write-Host "`n--- Username Cache ---`n" -ForegroundColor Cyan
+    Write-Host "`n--- Username Cache ---`n" -ForegroundColor Red
     try {
         $data = Get-Content $file -Raw | ConvertFrom-Json
         if (-not $data) { Write-Host "[usernamecache.json empty]" -ForegroundColor Gray; return }
@@ -111,7 +117,7 @@ function Get-UsernameCache {
         foreach ($entry in $data) {
             if ($entry.username -and $entry.uuid) {
                 Write-Host ("Username:`t{0}" -f $entry.username) -ForegroundColor Green
-                Write-Host ("UUID:`t`t{0}`n" -f $entry.uuid) -ForegroundColor DarkGreen
+                Write-Host ("UUID:`t`t{0}`n" -f $entry.uuid) -ForegroundColor Gray
             }
         }
     } catch {
@@ -126,7 +132,7 @@ function Get-UserCache {
         return
     }
 
-    Write-Host "`n--- User Cache ---`n" -ForegroundColor Cyan
+    Write-Host "`n--- User Cache ---`n" -ForegroundColor Red
     try {
         $data = Get-Content $file -Raw | ConvertFrom-Json
         if (-not $data) { Write-Host "[usercache.json empty]" -ForegroundColor Gray; return }
@@ -134,7 +140,7 @@ function Get-UserCache {
         foreach ($entry in $data) {
             if ($entry.name -and $entry.uuid) {
                 Write-Host ("Name:`t{0}" -f $entry.name) -ForegroundColor Green
-                Write-Host ("UUID:`t{0}`n" -f $entry.uuid) -ForegroundColor DarkGreen
+                Write-Host ("UUID:`t{0}`n" -f $entry.uuid) -ForegroundColor Gray
             }
         }
     } catch {
@@ -146,9 +152,9 @@ function Print-Menu {
     Clear-Host
     Print-AnimatedLogo
     Write-Host ""
-    Write-Host "                                       ------------------------------" -ForegroundColor Cyan
-    Write-Host "                                              ALTS-CHECKER TOOL        " -ForegroundColor Cyan
-    Write-Host "                                       ------------------------------" -ForegroundColor Cyan
+    Write-Host "                                       ------------------------------" -ForegroundColor Red
+    Write-Host "                                              ALTS-CHECKER TOOL        " -ForegroundColor Red
+    Write-Host "                                       ------------------------------" -ForegroundColor Red
     Write-Host ""
     Write-Host "                                    1. Open Log Folders" -ForegroundColor Green
     Write-Host "                                    2. Search Deleted Logs" -ForegroundColor Green
@@ -165,7 +171,7 @@ while ($true) {
     switch ($choice) {
         "1" {
             Clear-Host
-            Write-Host "Opening log folders..." -ForegroundColor Green
+            Write-Host "Opening log folders..." -ForegroundColor Gray
             Start-Process -FilePath "$env:APPDATA\.minecraft\logs"
             Start-Process -FilePath "$env:APPDATA\.minecraft\logs\blclient\minecraft\" -ErrorAction SilentlyContinue
             Start-Process -FilePath "$env:USERPROFILE\.lunarclient\offline\1.8\logs" -ErrorAction SilentlyContinue
@@ -174,7 +180,7 @@ while ($true) {
         }
         "2" {
             Clear-Host
-            Write-Host "Searching for deleted logs..." -ForegroundColor Green
+            Write-Host "Searching for deleted logs..." -ForegroundColor Gray
             Set-Location C:\
             fsutil usn readjournal C: csv | 
                 findstr /i /C:"0x80000200" | 
@@ -184,7 +190,7 @@ while ($true) {
         }
         "3" {
             Clear-Host
-            Write-Host "Showing Minecraft accounts..." -ForegroundColor Green
+            Write-Host "Showing Minecraft accounts..." -ForegroundColor Gray
             Get-TLauncherProfiles
             Get-LauncherAccounts
             Get-UsernameCache
@@ -192,7 +198,7 @@ while ($true) {
             Pause
         }
         "4" {
-            Write-Host "Exiting..." -ForegroundColor Cyan
+            Write-Host "Exiting..." -ForegroundColor Red
             break
         }
         default {
