@@ -4,11 +4,11 @@ function Print-AnimatedLogo {
     Write-Host -NoNewline ($padding)
     Write-Host -ForegroundColor Cyan @"
                               
-                              __  __          _                   _            
-                             |  \/  | ___  __| | ___ _ __ ___  __| | ___  _ __ 
-                             | |\/| |/ _ \/ _` |/ _ \ '__/ _ \/ _` |/ _ \| '__|
-                             | |  | |  __/ (_| |  __/ | |  __/ (_| | (_) | |   
-                             |_|  |_|\___|\__,_|\___|_|  \___|\__,_|\___/|_|   
+                              ___ _     _      _             _             
+                             / _ \ |__ (_) ___| | _____  ___| |_ ___  _ __ 
+                            | | | | '_ \| |/ __| |/ / _ \/ __| __/ _ \| '__|
+                            | |_| | |_) | | (__|   <  __/ (__| || (_) | |   
+                             \___/|_.__/|_|\___|_|\_\___|\___|\__\___/|_|   
 "@
     Start-Sleep -Milliseconds 500
 }
@@ -36,7 +36,7 @@ function Decode-Jwt {
 function Get-TLauncherProfiles {
     $file = "$env:APPDATA\.minecraft\TlauncherProfiles.json"
     if (-not (Test-Path $file)) {
-        Write-Host "`n[TLauncherProfiles.json non trovato]" -ForegroundColor Yellow
+        Write-Host "`n[TLauncherProfiles.json not found]" -ForegroundColor Yellow
         return
     }
 
@@ -66,7 +66,7 @@ function Get-TLauncherProfiles {
 function Get-LauncherAccounts {
     $file = "$env:APPDATA\.minecraft\launcher_accounts.json"
     if (-not (Test-Path $file)) {
-        Write-Host "`n[launcher_accounts.json non trovato]" -ForegroundColor Yellow
+        Write-Host "`n[launcher_accounts.json not found]" -ForegroundColor Yellow
         return
     }
 
@@ -74,7 +74,7 @@ function Get-LauncherAccounts {
     try {
         $data = Get-Content $file -Raw | ConvertFrom-Json
         if (-not $data.accounts) {
-            Write-Host "[Nessun account trovato]" -ForegroundColor Yellow
+            Write-Host "[No accounts found]" -ForegroundColor Yellow
             return
         }
 
@@ -89,21 +89,21 @@ function Get-LauncherAccounts {
         }
     }
     catch {
-        Write-Host "`n[Errore nella lettura di launcher_accounts.json]" -ForegroundColor Red
+        Write-Host "`n[Error reading launcher_accounts.json]" -ForegroundColor Red
     }
 }
 
 function Get-UsernameCache {
     $file = "$env:APPDATA\.minecraft\usernamecache.json"
     if (-not (Test-Path $file)) {
-        Write-Host "`n[usernamecache.json non trovato]" -ForegroundColor Yellow
+        Write-Host "`n[usernamecache.json not found]" -ForegroundColor Yellow
         return
     }
 
     Write-Host "`n--- Username Cache ---`n" -ForegroundColor Cyan
     try {
         $data = Get-Content $file -Raw | ConvertFrom-Json
-        if (-not $data) { Write-Host "[usernamecache.json vuoto]" -ForegroundColor Yellow; return }
+        if (-not $data) { Write-Host "[usernamecache.json empty]" -ForegroundColor Yellow; return }
 
         foreach ($entry in $data) {
             if ($entry.username -and $entry.uuid) {
@@ -111,29 +111,29 @@ function Get-UsernameCache {
             }
         }
     } catch {
-        Write-Host "`n[Errore nella lettura di usernamecache.json]" -ForegroundColor Red
+        Write-Host "`n[Error reading usernamecache.json]" -ForegroundColor Red
     }
 }
 
 function Get-UserCache {
     $file = "$env:APPDATA\.minecraft\usercache.json"
     if (-not (Test-Path $file)) {
-        Write-Host "`n[usercache.json non trovato]" -ForegroundColor Yellow
+        Write-Host "`n[usercache.json not found]" -ForegroundColor Yellow
         return
     }
 
     Write-Host "`n--- User Cache ---`n" -ForegroundColor Cyan
     try {
         $data = Get-Content $file -Raw | ConvertFrom-Json
-        if (-not $data) { Write-Host "[usercache.json vuoto]" -ForegroundColor Yellow; return }
+        if (-not $data) { Write-Host "[usercache.json empty]" -ForegroundColor Yellow; return }
 
         foreach ($entry in $data) {
             if ($entry.name -and $entry.uuid) {
-                Write-Host ("Nome:`t{0}`nUUID:`t{1}`n" -f $entry.name, $entry.uuid) -ForegroundColor Green
+                Write-Host ("Name:`t{0}`nUUID:`t{1}`n" -f $entry.name, $entry.uuid) -ForegroundColor Green
             }
         }
     } catch {
-        Write-Host "`n[Errore nella lettura di usercache.json]" -ForegroundColor Red
+        Write-Host "`n[Error reading usercache.json]" -ForegroundColor Red
     }
 }
 
@@ -142,16 +142,15 @@ function Print-Menu {
     Print-AnimatedLogo
     Write-Host ""
     Write-Host "                                       ------------------------------" -ForegroundColor Cyan
-    Write-Host "                                              MINECRAFT TOOL          " -ForegroundColor Cyan
+    Write-Host "                                              ALTS-CHECKER TOOL        " -ForegroundColor Cyan
     Write-Host "                                       ------------------------------" -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "                                    1. Apri cartelle log"
-    Write-Host "                                    2. Cerca log eliminati"
-    Write-Host "                                    3. Mostra account Minecraft"
-    Write-Host "                                    4. Installa WinRAR"
-    Write-Host "                                    5. Esci"
+    Write-Host "                                    1. Open Log Folders"
+    Write-Host "                                    2. Search Deleted Logs"
+    Write-Host "                                    3. Show Minecraft Accounts"
+    Write-Host "                                    4. Exit"
     Write-Host ""
-    $choice = Read-Host "                                    Seleziona un'opzione"
+    $choice = Read-Host "                                    Select an option"
     return $choice
 }
 
@@ -161,7 +160,7 @@ while ($true) {
     switch ($choice) {
         "1" {
             Clear-Host
-            Write-Host "Apro le cartelle dei log..."
+            Write-Host "Opening log folders..."
             Start-Process -FilePath "$env:APPDATA\.minecraft\logs"
             Start-Process -FilePath "$env:APPDATA\.minecraft\logs\blclient\minecraft\" -ErrorAction SilentlyContinue
             Start-Process -FilePath "$env:USERPROFILE\.lunarclient\offline\1.8\logs" -ErrorAction SilentlyContinue
@@ -170,7 +169,7 @@ while ($true) {
         }
         "2" {
             Clear-Host
-            Write-Host "Cerco i logs eliminati..."
+            Write-Host "Searching for deleted logs..."
             Set-Location C:\
             fsutil usn readjournal C: csv | 
                 findstr /i /C:"0x80000200" | 
@@ -180,7 +179,7 @@ while ($true) {
         }
         "3" {
             Clear-Host
-            Write-Host "Mostro gli account Minecraft..."
+            Write-Host "Showing Minecraft accounts..."
             Get-TLauncherProfiles
             Get-LauncherAccounts
             Get-UsernameCache
@@ -188,27 +187,11 @@ while ($true) {
             Pause
         }
         "4" {
-            Clear-Host
-            $installer = Read-Host "Vuoi scaricare e installare WinRAR? (Si/No)"
-            if ($installer -eq "Si") {
-                Write-Host "Scarico WinRAR..."
-                $url = 'https://www.win-rar.com/fileadmin/winrar-versions/winrar/winrar-x64-700it.exe'
-                $output = "$env:USERPROFILE\Downloads\winrar-x64-700it.exe"
-                (New-Object System.Net.WebClient).DownloadFile($url, $output)
-                Write-Host "Download completato."
-                Start-Process -FilePath $output
-                Read-Host "WinRAR avviato. Premi invio per continuare..."
-            } else {
-                Write-Host "Nessun'altra opzione disponibile."
-                Pause
-            }
-        }
-        "5" {
-            Write-Host "Uscita in corso..." -ForegroundColor Yellow
+            Write-Host "Exiting..." -ForegroundColor Yellow
             break
         }
         default {
-            Write-Host "Opzione non valida. Riprova." -ForegroundColor Red
+            Write-Host "Invalid option, please try again." -ForegroundColor Red
             Start-Sleep -Seconds 1
         }
     }
