@@ -1,22 +1,25 @@
-$script:foundAccounts = @()
-$script:reportData = @{}
-
 function Print-AnimatedLogo {
     Clear-Host
     $width = $Host.UI.RawUI.BufferSize.Width
 
     $logoLines = @(
-        "   __ _| | |_ ___        ___| |__   ___  ___| | _____ _ __",
-        "  / _` | | __/ __|_____ / __| '_ \ / _ \/ __| |/ / _ \ '__|",
-        " | (_| | | |_\__ \_____| (__| | | |  __/ (__|   <  __/ |   ",
-        "  \__,_|_|\__|___/      \___|_| |_|\___|\___|_|\_\___|_|   ",
+        "   █████╗  ██╗     ████████╗███████╗     ██████╗██╗  ██╗███████╗ ██████╗██╗  ██╗███████╗██████╗ ",
+        "   ██╔══██╗██║     ╚══██╔══╝██╔════╝    ██╔════╝██║  ██║██╔════╝██╔════╝██║ ██╔╝██╔════╝██╔══██╗",
+        "   ███████║██║        ██║   ███████╗    ██║     ███████║█████╗  ██║     █████╔╝ █████╗  ██████╔╝",
+        "   ██╔══██║██║        ██║   ╚════██║    ██║     ██╔══██║██╔══╝  ██║     ██╔═██╗ ██╔══╝  ██╔══██╗",
+        "   ██║  ██║███████╗   ██║   ███████║    ╚██████╗██║  ██║███████║╚██████╗██║  ██╗███████╗██║  ██║",
+        "   ╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝     ╚═════╝╚═╝  ╚═╝ ╚═════╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝",
         "",
-        "ENHANCED ALTS-CHECKER TOOL v2.0"
+        "                                    Developed by usnjournal. & onlynelchilling"
     )
 
     foreach ($line in $logoLines) {
         $padding = [Math]::Max(0, [int](($width - $line.Length) / 2))
-        Write-Host (" " * $padding + $line) -ForegroundColor Red
+        if ($line -match "Developed by") {
+            Write-Host (" " * $padding + $line) -ForegroundColor DarkRed
+        } else {
+            Write-Host (" " * $padding + $line) -ForegroundColor Magenta
+        }
     }
     Start-Sleep -Milliseconds 500
 }
@@ -81,7 +84,7 @@ function Get-TLauncherProfiles {
 
     try {
         $data = Get-Content $file -Raw | ConvertFrom-Json
-        Write-Host "`n--- TLauncher Profiles ---`n" -ForegroundColor Red
+        Write-Host "`n--- TLauncher Profiles ---`n" -ForegroundColor Magenta
         
         foreach ($acc in $data.accounts.PSObject.Properties) {
             $info = $acc.Value
@@ -123,7 +126,7 @@ function Get-LauncherAccounts {
         return
     }
 
-    Write-Host "`n--- Launcher Accounts ---`n" -ForegroundColor Red
+    Write-Host "`n--- Launcher Accounts ---`n" -ForegroundColor Magenta
     try {
         $data = Get-Content $file -Raw | ConvertFrom-Json
         if (-not $data.accounts) {
@@ -156,7 +159,7 @@ function Get-MultiMCAccounts {
         return
     }
 
-    Write-Host "`n--- MultiMC Accounts ---`n" -ForegroundColor Red
+    Write-Host "`n--- MultiMC Accounts ---`n" -ForegroundColor Magenta
     try {
         $data = Get-Content $multiMCPath -Raw | ConvertFrom-Json
         foreach ($acc in $data.accounts) {
@@ -177,7 +180,7 @@ function Get-BadlionAccounts {
         "$env:APPDATA\Badlion Client\settings.json"
     )
 
-    Write-Host "`n--- Badlion Client ---`n" -ForegroundColor Red
+    Write-Host "`n--- Badlion Client ---`n" -ForegroundColor Magenta
     $found = $false
 
     foreach ($path in $badlionPaths) {
@@ -210,7 +213,7 @@ function Get-LunarClientAccounts {
         "$env:USERPROFILE\.lunarclient\accounts.json"
     )
 
-    Write-Host "`n--- Lunar Client ---`n" -ForegroundColor Red
+    Write-Host "`n--- Lunar Client ---`n" -ForegroundColor Magenta
     $found = $false
 
     foreach ($path in $lunarPaths) {
@@ -245,7 +248,7 @@ function Get-UsernameCache {
         return
     }
 
-    Write-Host "`n--- Username Cache ---`n" -ForegroundColor Red
+    Write-Host "`n--- Username Cache ---`n" -ForegroundColor Magenta
     try {
         $data = Get-Content $file -Raw | ConvertFrom-Json
         if (-not $data) { Write-Host "[usernamecache.json empty]" -ForegroundColor Gray; return }
@@ -270,7 +273,7 @@ function Get-UserCache {
         return
     }
 
-    Write-Host "`n--- User Cache ---`n" -ForegroundColor Red
+    Write-Host "`n--- User Cache ---`n" -ForegroundColor Magenta
     try {
         $data = Get-Content $file -Raw | ConvertFrom-Json
         if (-not $data) { Write-Host "[usercache.json empty]" -ForegroundColor Gray; return }
@@ -289,7 +292,7 @@ function Get-UserCache {
 }
 
 function Search-AdvancedConfigs {
-    Write-Host "`n--- Advanced Config Search ---`n" -ForegroundColor Red
+    Write-Host "`n--- Advanced Config Search ---`n" -ForegroundColor Magenta
     
     $searchPaths = @(
         "$env:APPDATA\.minecraft",
@@ -350,7 +353,7 @@ function Search-AdvancedConfigs {
 }
 
 function Analyze-JWTTokens {
-    Write-Host "`n--- JWT Token Analysis ---`n" -ForegroundColor Red
+    Write-Host "`n--- JWT Token Analysis ---`n" -ForegroundColor Magenta
     
     $searchPaths = @(
         "$env:APPDATA\.minecraft",
@@ -400,7 +403,7 @@ function Analyze-JWTTokens {
 }
 
 function Get-WindowsEventLogs {
-    Write-Host "`n--- Windows Event Logs Analysis ---`n" -ForegroundColor Red
+    Write-Host "`n--- Windows Event Logs Analysis ---`n" -ForegroundColor Magenta
     
     try {
         Write-Host "Searching Application logs..." -ForegroundColor Yellow
@@ -438,7 +441,7 @@ function Backup-MinecraftConfigs {
     try {
         New-Item -ItemType Directory -Path $backupPath -Force | Out-Null
         
-        Write-Host "`n--- Creating Backup ---`n" -ForegroundColor Red
+        Write-Host "`n--- Creating Backup ---`n" -ForegroundColor Magenta
         
         $filesToBackup = @(
             @{Path="$env:APPDATA\.minecraft\launcher_accounts.json"; Name="launcher_accounts.json"},
@@ -883,7 +886,6 @@ function Generate-HTMLReport {
         // Sample data - in real implementation this would come from PowerShell
         const accountsData = [
             // This would be populated by the PowerShell script
-            // Example:
             /*
             {
                 Source: "TLauncher",
@@ -1142,7 +1144,7 @@ function Export-AccountsCSV {
 }
 
 function Search-BrowserHistory {
-    Write-Host "`n--- Browser History Analysis ---`n" -ForegroundColor Red
+    Write-Host "`n--- Browser History Analysis ---`n" -ForegroundColor Magenta
 
     $chromePath = "$env:LOCALAPPDATA\Google\Chrome\User Data\Default\History"
     if (Test-Path $chromePath) {
@@ -1163,7 +1165,7 @@ function Search-BrowserHistory {
                 
                 foreach ($url in $minecraftUrls) {
                     if ($content -match $url) {
-                        Write-Host ("Found visits to: {0}" -f $url) -ForegroundColor Green
+                        Write-Host ("Found visits to: {0}" -f $url) -ForegroundColor Cyan
                     }
                 }
             }
@@ -1184,7 +1186,7 @@ function Search-BrowserHistory {
             foreach ($profile in $profiles) {
                 $historyPath = Join-Path $profile.FullName "places.sqlite"
                 if (Test-Path $historyPath) {
-                    Write-Host ("Found Firefox profile: {0}" -f $profile.Name) -ForegroundColor Green
+                    Write-Host ("Found Firefox profile: {0}" -f $profile.Name) -ForegroundColor Cyan
                 }
             }
         } catch {
@@ -1196,7 +1198,7 @@ function Search-BrowserHistory {
 }
 
 function Get-ProcessInformation {
-    Write-Host "`n--- Running Processes Analysis ---`n" -ForegroundColor Red
+    Write-Host "`n--- Running Processes Analysis ---`n" -ForegroundColor Magenta
     
     try {
         $processes = Get-Process | Where-Object { 
@@ -1234,7 +1236,7 @@ function Get-ProcessInformation {
 }
 
 function Search-RegistryEntries {
-    Write-Host "`n--- Registry Analysis ---`n" -ForegroundColor Red
+    Write-Host "`n--- Registry Analysis ---`n" -ForegroundColor Magenta
     
     try {
         $registryPaths = @(
@@ -1285,7 +1287,7 @@ function Search-RegistryEntries {
 
 function Show-AccountSummary {
     Clear-Host
-    Write-Host "`n--- ACCOUNT SUMMARY ---`n" -ForegroundColor Red -BackgroundColor Black
+    Write-Host "`n--- ACCOUNT SUMMARY ---`n" -ForegroundColor Magenta -BackgroundColor Black
     
     if ($script:foundAccounts.Count -eq 0) {
         Write-Host "No accounts have been scanned yet. Please run account detection first." -ForegroundColor Yellow
@@ -1320,32 +1322,33 @@ function Print-MainMenu {
     Clear-Host
     Print-AnimatedLogo
     Write-Host ""
-    Write-Host "                                    ======================================" -ForegroundColor Red
-    Write-Host "                                         ENHANCED ALTS-CHECKER TOOL v2.0  " -ForegroundColor Red
-    Write-Host "                                    ======================================" -ForegroundColor Red
+    Write-Host "                                    ======================================" -ForegroundColor Magenta
+    Write-Host "                                         ENHANCED ALTS-CHECKER TOOL v2.0  " -ForegroundColor Magenta
+    Write-Host "                                    ======================================" -ForegroundColor Magenta
     Write-Host ""
-    Write-Host "                                   1. Open Log Folders" -ForegroundColor Gray
-    Write-Host "                                   2. Search Deleted Logs" -ForegroundColor Gray
-    Write-Host "                                   3. Show All Minecraft Accounts" -ForegroundColor Gray
-    Write-Host "                                   4. Scan Other Launchers" -ForegroundColor Yellow
-    Write-Host "                                   5. Advanced Config Search" -ForegroundColor Yellow
-    Write-Host "                                   6. Analyze JWT Tokens" -ForegroundColor Yellow
-    Write-Host "                                   7. Windows Event Logs" -ForegroundColor Yellow
-    Write-Host "                                   8. Browser History Analysis" -ForegroundColor Yellow
-    Write-Host "                                   9. Backup Configurations" -ForegroundColor Yellow
-    Write-Host "                                   10. Account Summary" -ForegroundColor Cyan
-    Write-Host "                                   11. Generate HTML Report" -ForegroundColor Cyan
-    Write-Host "                                   12. Export to CSV" -ForegroundColor Cyan
+    Write-Host "                                   1. Open Log Folders" -ForegroundColor Magenta
+    Write-Host "                                   2. Search Deleted Logs" -ForegroundColor Magenta
+    Write-Host "                                   3. Show All Minecraft Accounts" -ForegroundColor Magenta
+    Write-Host "                                   4. Scan Other Launchers" -ForegroundColor Magenta
+    Write-Host "                                   5. Advanced Config Search" -ForegroundColor Magenta
+    Write-Host "                                   6. Analyze JWT Tokens" -ForegroundColor Magenta
+    Write-Host "                                   7. Windows Event Logs" -ForegroundColor Magenta
+    Write-Host "                                   8. Browser History Analysis" -ForegroundColor Magenta
+    Write-Host "                                   9. Backup Configurations" -ForegroundColor Magenta
+    Write-Host "                                   10. Account Summary" -ForegroundColor Magenta
+    Write-Host "                                   11. Generate HTML Report" -ForegroundColor Magenta
+    Write-Host "                                   12. Export to CSV" -ForegroundColor Magenta
     Write-Host "                                   13. System Analysis" -ForegroundColor Magenta
-    Write-Host "                                   14. Exit" -ForegroundColor Gray
+    Write-Host "                                   14. Install WinRAR" -ForegroundColor Magenta
+    Write-Host "                                   15. Exit" -ForegroundColor Red
     Write-Host ""
-    Write-Host ("                                Accounts found so far: {0}" -f $script:foundAccounts.Count) -ForegroundColor Green
+    Write-Host ("                                Accounts found so far: {0}" -f $script:foundAccounts.Count) -ForegroundColor Magenta
     Write-Host ""
-    $choice = Read-Host "                                    Select an option (1-14)"
+    $choice = Read-Host "                                    Select an option (1-15)"
     return $choice
 }
 
-Write-Host "Initializing Enhanced Minecraft Alts Checker..." -ForegroundColor Yellow
+Write-Host "Initializing Enhanced Minecraft Alts Checker..." -ForegroundColor Magenta
 Start-Sleep -Seconds 1
 
 while ($true) {
@@ -1354,7 +1357,7 @@ while ($true) {
     switch ($choice) {
         "1" {
             Clear-Host
-            Write-Host "Opening log folders..." -ForegroundColor Gray
+            Write-Host "Opening log folders..." -ForegroundColor Magenta
             $folders = @(
                 "$env:APPDATA\.minecraft\logs",
                 "$env:APPDATA\.minecraft\logs\blclient\minecraft\",
@@ -1365,7 +1368,7 @@ while ($true) {
             foreach ($folder in $folders) {
                 if (Test-Path $folder) {
                     Start-Process -FilePath $folder
-                    Write-Host ("Opened: {0}" -f $folder) -ForegroundColor Green
+                    Write-Host ("Opened: {0}" -f $folder) -ForegroundColor Magenta
                 } else {
                     Write-Host ("Not found: {0}" -f $folder) -ForegroundColor Red
                 }
@@ -1374,8 +1377,8 @@ while ($true) {
         }
         "2" {
             Clear-Host
-            Write-Host "Searching for deleted logs..." -ForegroundColor Yellow
-            Write-Host "This may take a few minutes..." -ForegroundColor Gray
+            Write-Host "Searching for deleted logs..." -ForegroundColor Magenta
+            Write-Host "This may take a few minutes..." -ForegroundColor White
             
             try {
                 Set-Location C:\
@@ -1387,7 +1390,7 @@ while ($true) {
                 
                 if (Test-Path $logFile) {
                     $lineCount = (Get-Content $logFile).Count
-                    Write-Host ("Found {0} deleted log entries" -f $lineCount) -ForegroundColor Green
+                    Write-Host ("Found {0} deleted log entries" -f $lineCount) -ForegroundColor Magenta
                     Start-Process -FilePath "notepad.exe" -ArgumentList $logFile
                 } else {
                     Write-Host "No deleted logs found or insufficient permissions" -ForegroundColor Red
@@ -1399,7 +1402,7 @@ while ($true) {
         }
         "3" {
             Clear-Host
-            Write-Host "Scanning all Minecraft accounts..." -ForegroundColor Yellow
+            Write-Host "Scanning all Minecraft accounts..." -ForegroundColor Magenta
             $script:foundAccounts = @()
             
             Get-TLauncherProfiles
@@ -1407,62 +1410,62 @@ while ($true) {
             Get-UsernameCache
             Get-UserCache
             
-            Write-Host "Scan completed!" -ForegroundColor Green
-            Write-Host ("Total accounts found: {0}" -f $script:foundAccounts.Count) -ForegroundColor Cyan
+            Write-Host "Scan completed!" -ForegroundColor Magenta
+            Write-Host ("Total accounts found: {0}" -f $script:foundAccounts.Count) -ForegroundColor White
             Pause
         }
         "4" {
             Clear-Host
-            Write-Host "Scanning other launchers..." -ForegroundColor Yellow
+            Write-Host "Scanning other launchers..." -ForegroundColor Magenta
             
             Get-MultiMCAccounts
             Get-BadlionAccounts
             Get-LunarClientAccounts
             
-            Write-Host "Other launchers scan completed!" -ForegroundColor Green
+            Write-Host "Other launchers scan completed!" -ForegroundColor Magenta
             Pause
         }
         "5" {
             Clear-Host
-            Write-Host "Starting advanced configuration search..." -ForegroundColor Yellow
-            Write-Host "This will search all common Minecraft directories for configuration files..." -ForegroundColor Gray
+            Write-Host "Starting advanced configuration search..." -ForegroundColor Magenta
+            Write-Host "This will search all common Minecraft directories for configuration files..." -ForegroundColor White
             
             Search-AdvancedConfigs
             
-            Write-Host "Advanced search completed!" -ForegroundColor Green
+            Write-Host "Advanced search completed!" -ForegroundColor Magenta
             Pause
         }
         "6" {
             Clear-Host
-            Write-Host "Analyzing JWT tokens..." -ForegroundColor Yellow
+            Write-Host "Analyzing JWT tokens..." -ForegroundColor Magenta
             
             Analyze-JWTTokens
             
-            Write-Host "Token analysis completed!" -ForegroundColor Green
+            Write-Host "Token analysis completed!" -ForegroundColor Magenta
             Pause
         }
         "7" {
             Clear-Host
-            Write-Host "Analyzing Windows Event Logs..." -ForegroundColor Yellow
-            Write-Host "Searching for Minecraft-related system events..." -ForegroundColor Gray
+            Write-Host "Analyzing Windows Event Logs..." -ForegroundColor Magenta
+            Write-Host "Searching for Minecraft-related system events..." -ForegroundColor White
             
             Get-WindowsEventLogs
             
-            Write-Host "Event log analysis completed!" -ForegroundColor Green
+            Write-Host "Event log analysis completed!" -ForegroundColor Magenta
             Pause
         }
         "8" {
             Clear-Host
-            Write-Host "Analyzing browser history..." -ForegroundColor Yellow
+            Write-Host "Analyzing browser history..." -ForegroundColor Magenta
             
             Search-BrowserHistory
             
-            Write-Host "Browser analysis completed!" -ForegroundColor Green
+            Write-Host "Browser analysis completed!" -ForegroundColor Magenta
             Pause
         }
         "9" {
             Clear-Host
-            Write-Host "Creating backup of Minecraft configurations..." -ForegroundColor Yellow
+            Write-Host "Creating backup of Minecraft configurations..." -ForegroundColor Magenta
             
             Backup-MinecraftConfigs
             
@@ -1474,7 +1477,7 @@ while ($true) {
         }
         "11" {
             Clear-Host
-            Write-Host "Generating comprehensive HTML report..." -ForegroundColor Yellow
+            Write-Host "Generating comprehensive HTML report..." -ForegroundColor Magenta
             
             if ($script:foundAccounts.Count -eq 0) {
                 Write-Host "No accounts found. Please run account detection first." -ForegroundColor Red
@@ -1486,7 +1489,7 @@ while ($true) {
         }
         "12" {
             Clear-Host
-            Write-Host "Exporting accounts to CSV..." -ForegroundColor Yellow
+            Write-Host "Exporting accounts to CSV..." -ForegroundColor Magenta
             
             if ($script:foundAccounts.Count -eq 0) {
                 Write-Host "No accounts found. Please run account detection first." -ForegroundColor Red
@@ -1498,15 +1501,36 @@ while ($true) {
         }
         "13" {
             Clear-Host
-            Write-Host "Running comprehensive system analysis..." -ForegroundColor Yellow
+            Write-Host "Running comprehensive system analysis..." -ForegroundColor Magenta
             
             Get-ProcessInformation
             Search-RegistryEntries
             
-            Write-Host "System analysis completed!" -ForegroundColor Green
+            Write-Host "System analysis completed!" -ForegroundColor Magenta
             Pause
         }
         "14" {
+            Clear-Host
+            $installer = Read-Host "Vuoi scaricare e installare WinRAR? (Si/No)"
+            if ($installer -eq "Si") {
+                Write-Host "Sto scaricando WinRAR..." -ForegroundColor Magenta
+                $url = 'https://www.win-rar.com/fileadmin/winrar-versions/winrar/winrar-x64-700it.exe'
+                $output = "C:\Users\$env:USERNAME\Downloads\winrar-x64-700it.exe"
+                try {
+                    (New-Object System.Net.WebClient).DownloadFile($url, $output)
+                    Write-Host "Download di WinRAR completato." -ForegroundColor Magenta
+                    Start-Process -FilePath $output
+                    $confirmation = Read-Host "WinRAR è stato avviato correttamente, premi il tasto invio per andare avanti"
+                } catch {
+                    Write-Host "Errore durante il download di WinRAR: $_" -ForegroundColor Red
+                    Pause
+                }
+            } else {
+                Write-Host "Nessun'altra opzione disponibile al momento." -ForegroundColor Magenta
+                Pause
+            }
+        }
+        "15" {
             Clear-Host
             Write-Host ""
             Write-Host "                                    ═══════════════════════════════" -ForegroundColor Red
@@ -1514,13 +1538,13 @@ while ($true) {
             Write-Host "                                      Enhanced Alts Checker v2.0   " -ForegroundColor Red
             Write-Host "                                    ═══════════════════════════════" -ForegroundColor Red
             Write-Host ""
-            Write-Host "                                     Goodbye and happy gaming!" -ForegroundColor Yellow
+            Write-Host "                                     Goodbye and happy gaming!" -ForegroundColor Magenta
             Write-Host ""
             Start-Sleep -Seconds 2
             break
         }
         default {
-            Write-Host "Invalid option. Please select a number between 1-14." -ForegroundColor Red
+            Write-Host "Invalid option. Please select a number between 1-15." -ForegroundColor Red
             Start-Sleep -Seconds 2
         }
     }
