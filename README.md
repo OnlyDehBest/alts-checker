@@ -2,9 +2,8 @@
 
 🛠️ **ALTS-CHECKER TOOL**
 
-🔐 PowerShell script to analyze locally stored Minecraft accounts.
-
-This PowerShell tool allows you to view, inspect, and decode Minecraft accounts stored in local files by TLauncher or the official Minecraft launcher, including Microsoft OAuth tokens (accessToken / id_token) when available.
+🔐 **PowerShell script to analyze locally stored Minecraft accounts**.
+ - This PowerShell tool allows you to view, inspect, and decode Minecraft accounts stored in local files by TLauncher or the official Minecraft launcher, including Microsoft OAuth tokens (accessToken / id_token) when available.
 
 📁**Open Log Folders**
  - Automatically opens log folders.
