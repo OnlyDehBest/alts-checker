@@ -45,5 +45,6 @@
  - %APPDATA%\.minecraft\usercache.json
 
 📜 **Legal Notice**
+
 This tool is intended for personal use and debugging only. It must not be used to violate any terms of service or access unauthorized accounts.
 The author is not responsible for any misuse of this script.
