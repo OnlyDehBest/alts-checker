@@ -4,11 +4,10 @@ function Print-AnimatedLogo {
     Write-Host -NoNewline ($padding)
     Write-Host -ForegroundColor Cyan @"
                               
- █████╗ ██╗  ████████╗███████╗       ██████╗██╗  ██╗███████╗ ██████╗██╗  ██╗███████╗██████╗ 
-██╔══██╗██║  ╚══██╔══╝██╔════╝      ██╔════╝██║  ██║██╔════╝██╔════╝██║ ██╔╝██╔════╝██╔══██╗
-███████║██║     ██║   ███████╗█████╗██║     ███████║█████╗  ██║     █████╔╝ █████╗  ██████╔╝
-██╔══██║██║     ██║   ╚════██║╚════╝██║     ██╔══██║██╔══╝  ██║     ██╔═██╗ ██╔══╝  ██╔══██╗
-██║  ██║███████╗██║   ███████║      ╚██████╗██║  ██║███████╗╚██████╗██║  ██╗███████╗██║  ██║
+   __ _| | |_ ___        ___| |__   ___  ___| | _____ _ __ 
+  / _` | | __/ __|_____ / __| '_ \ / _ \/ __| |/ / _ \ '__|
+ | (_| | | |_\__ \_____| (__| | | |  __/ (__|   <  __/ |   
+  \__,_|_|\__|___/      \___|_| |_|\___|\___|_|\_\___|_|
 "@
     Start-Sleep -Milliseconds 500
 }
@@ -36,7 +35,7 @@ function Decode-Jwt {
 function Get-TLauncherProfiles {
     $file = "$env:APPDATA\.minecraft\TlauncherProfiles.json"
     if (-not (Test-Path $file)) {
-        Write-Host "`n[TLauncherProfiles.json not found]" -ForegroundColor Yellow
+        Write-Host "`n[TLauncherProfiles.json not found]" -ForegroundColor Gray
         return
     }
 
@@ -51,8 +50,10 @@ function Get-TLauncherProfiles {
 
             $premium = if ($token) { 'yes' } else { 'no' }
 
-            Write-Host ("DisplayName:`t{0}`nUUID:`t`t{1}`nType:`t`t{2}`nPremium:`t{3}`n" -f 
-                $info.displayName, $info.uuid, $info.type, $premium) -ForegroundColor Green
+            Write-Host ("DisplayName:`t{0}" -f $info.displayName) -ForegroundColor Green
+            Write-Host ("UUID:`t`t{0}" -f $info.uuid) -ForegroundColor DarkGreen
+            Write-Host ("Type:`t`t{0}" -f $info.type) -ForegroundColor DarkGreen
+            Write-Host ("Premium:`t{0}`n" -f $premium) -ForegroundColor Green
 
             if ($token) {
                 $claims = Decode-Jwt $token
@@ -66,7 +67,7 @@ function Get-TLauncherProfiles {
 function Get-LauncherAccounts {
     $file = "$env:APPDATA\.minecraft\launcher_accounts.json"
     if (-not (Test-Path $file)) {
-        Write-Host "`n[launcher_accounts.json not found]" -ForegroundColor Yellow
+        Write-Host "`n[launcher_accounts.json not found]" -ForegroundColor Gray
         return
     }
 
@@ -74,7 +75,7 @@ function Get-LauncherAccounts {
     try {
         $data = Get-Content $file -Raw | ConvertFrom-Json
         if (-not $data.accounts) {
-            Write-Host "[No accounts found]" -ForegroundColor Yellow
+            Write-Host "[No accounts found]" -ForegroundColor Gray
             return
         }
 
@@ -84,8 +85,10 @@ function Get-LauncherAccounts {
             $type = if ($info.type) { $info.type } else { "N/A" }
             $token = if ($info.accessToken) { 'yes' } else { 'no' }
 
-            Write-Host ("Username:`t{0}`nUUID:`t`t{1}`nType:`t`t{2}`nToken:`t{3}`n" -f 
-                $info.username, $uuid, $type, $token) -ForegroundColor Green
+            Write-Host ("Username:`t{0}" -f $info.username) -ForegroundColor Green
+            Write-Host ("UUID:`t`t{0}" -f $uuid) -ForegroundColor DarkGreen
+            Write-Host ("Type:`t`t{0}" -f $type) -ForegroundColor DarkGreen
+            Write-Host ("Token:`t{0}`n" -f $token) -ForegroundColor Green
         }
     }
     catch {
@@ -96,18 +99,19 @@ function Get-LauncherAccounts {
 function Get-UsernameCache {
     $file = "$env:APPDATA\.minecraft\usernamecache.json"
     if (-not (Test-Path $file)) {
-        Write-Host "`n[usernamecache.json not found]" -ForegroundColor Yellow
+        Write-Host "`n[usernamecache.json not found]" -ForegroundColor Gray
         return
     }
 
     Write-Host "`n--- Username Cache ---`n" -ForegroundColor Cyan
     try {
         $data = Get-Content $file -Raw | ConvertFrom-Json
-        if (-not $data) { Write-Host "[usernamecache.json empty]" -ForegroundColor Yellow; return }
+        if (-not $data) { Write-Host "[usernamecache.json empty]" -ForegroundColor Gray; return }
 
         foreach ($entry in $data) {
             if ($entry.username -and $entry.uuid) {
-                Write-Host ("Username:`t{0}`nUUID:`t`t{1}`n" -f $entry.username, $entry.uuid) -ForegroundColor Green
+                Write-Host ("Username:`t{0}" -f $entry.username) -ForegroundColor Green
+                Write-Host ("UUID:`t`t{0}`n" -f $entry.uuid) -ForegroundColor DarkGreen
             }
         }
     } catch {
@@ -118,18 +122,19 @@ function Get-UsernameCache {
 function Get-UserCache {
     $file = "$env:APPDATA\.minecraft\usercache.json"
     if (-not (Test-Path $file)) {
-        Write-Host "`n[usercache.json not found]" -ForegroundColor Yellow
+        Write-Host "`n[usercache.json not found]" -ForegroundColor Gray
         return
     }
 
     Write-Host "`n--- User Cache ---`n" -ForegroundColor Cyan
     try {
         $data = Get-Content $file -Raw | ConvertFrom-Json
-        if (-not $data) { Write-Host "[usercache.json empty]" -ForegroundColor Yellow; return }
+        if (-not $data) { Write-Host "[usercache.json empty]" -ForegroundColor Gray; return }
 
         foreach ($entry in $data) {
             if ($entry.name -and $entry.uuid) {
-                Write-Host ("Name:`t{0}`nUUID:`t{1}`n" -f $entry.name, $entry.uuid) -ForegroundColor Green
+                Write-Host ("Name:`t{0}" -f $entry.name) -ForegroundColor Green
+                Write-Host ("UUID:`t{0}`n" -f $entry.uuid) -ForegroundColor DarkGreen
             }
         }
     } catch {
@@ -145,10 +150,10 @@ function Print-Menu {
     Write-Host "                                              ALTS-CHECKER TOOL        " -ForegroundColor Cyan
     Write-Host "                                       ------------------------------" -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "                                    1. Open Log Folders"
-    Write-Host "                                    2. Search Deleted Logs"
-    Write-Host "                                    3. Show Minecraft Accounts"
-    Write-Host "                                    4. Exit"
+    Write-Host "                                    1. Open Log Folders" -ForegroundColor Green
+    Write-Host "                                    2. Search Deleted Logs" -ForegroundColor Green
+    Write-Host "                                    3. Show Minecraft Accounts" -ForegroundColor Green
+    Write-Host "                                    4. Exit" -ForegroundColor Green
     Write-Host ""
     $choice = Read-Host "                                    Select an option"
     return $choice
@@ -160,7 +165,7 @@ while ($true) {
     switch ($choice) {
         "1" {
             Clear-Host
-            Write-Host "Opening log folders..."
+            Write-Host "Opening log folders..." -ForegroundColor Green
             Start-Process -FilePath "$env:APPDATA\.minecraft\logs"
             Start-Process -FilePath "$env:APPDATA\.minecraft\logs\blclient\minecraft\" -ErrorAction SilentlyContinue
             Start-Process -FilePath "$env:USERPROFILE\.lunarclient\offline\1.8\logs" -ErrorAction SilentlyContinue
@@ -169,7 +174,7 @@ while ($true) {
         }
         "2" {
             Clear-Host
-            Write-Host "Searching for deleted logs..."
+            Write-Host "Searching for deleted logs..." -ForegroundColor Green
             Set-Location C:\
             fsutil usn readjournal C: csv | 
                 findstr /i /C:"0x80000200" | 
@@ -179,7 +184,7 @@ while ($true) {
         }
         "3" {
             Clear-Host
-            Write-Host "Showing Minecraft accounts..."
+            Write-Host "Showing Minecraft accounts..." -ForegroundColor Green
             Get-TLauncherProfiles
             Get-LauncherAccounts
             Get-UsernameCache
@@ -187,7 +192,7 @@ while ($true) {
             Pause
         }
         "4" {
-            Write-Host "Exiting..." -ForegroundColor Yellow
+            Write-Host "Exiting..." -ForegroundColor Cyan
             break
         }
         default {
