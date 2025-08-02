@@ -1323,7 +1323,7 @@ function Print-MainMenu {
     Print-AnimatedLogo
     Write-Host ""
     Write-Host "                                    ======================================" -ForegroundColor Magenta
-    Write-Host "                                         ENHANCED ALTS-CHECKER TOOL v2.0  " -ForegroundColor Magenta
+    Write-Host "                                         ENHANCED ALTS-CHECKER TOOL v3.0  " -ForegroundColor Magenta
     Write-Host "                                    ======================================" -ForegroundColor Magenta
     Write-Host ""
     Write-Host "                                   1. Open Log Folders" -ForegroundColor Magenta
@@ -1549,3 +1549,4 @@ while ($true) {
         }
     }
 }
+
