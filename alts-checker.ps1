@@ -1340,11 +1340,12 @@ function Print-MainMenu {
     Write-Host "                                   12. Export to CSV" -ForegroundColor Magenta
     Write-Host "                                   13. System Analysis" -ForegroundColor Magenta
     Write-Host "                                   14. Install WinRAR" -ForegroundColor Magenta
-    Write-Host "                                   15. Exit" -ForegroundColor Red
+    Write-Host "                                   15. Install 7-Zip" -ForegroundColor Magenta
+    Write-Host "                                   16. Exit" -ForegroundColor Red
     Write-Host ""
     Write-Host ("                                Accounts found so far: {0}" -f $script:foundAccounts.Count) -ForegroundColor Magenta
     Write-Host ""
-    $choice = Read-Host "                                    Select an option (1-15)"
+    $choice = Read-Host "                                    Select an option (1-16)"
     return $choice
 }
 
@@ -1511,31 +1512,53 @@ while ($true) {
         }
         "14" {
             Clear-Host
-            $installer = Read-Host "Vuoi scaricare e installare WinRAR? (Si/No)"
-            if ($installer -eq "Si") {
-                Write-Host "Sto scaricando WinRAR..." -ForegroundColor Magenta
+            $installer = Read-Host "Do you want to download and install WinRAR? (Yes/No)"
+            if ($installer -eq "yes") {
+                Write-Host "Downloading WinRAR..." -ForegroundColor Magenta
                 $url = 'https://www.win-rar.com/fileadmin/winrar-versions/winrar/winrar-x64-700it.exe'
                 $output = "C:\Users\$env:USERNAME\Downloads\winrar-x64-700it.exe"
                 try {
                     (New-Object System.Net.WebClient).DownloadFile($url, $output)
-                    Write-Host "Download di WinRAR completato." -ForegroundColor Magenta
+                    Write-Host "WinRAR download completed." -ForegroundColor Magenta
                     Start-Process -FilePath $output
-                    $confirmation = Read-Host "WinRAR è stato avviato correttamente, premi il tasto invio per andare avanti"
+                    $confirmation = Read-Host "WinRAR installer has been launched. Press Enter to continue."
                 } catch {
-                    Write-Host "Errore durante il download di WinRAR: $_" -ForegroundColor Red
+                    Write-Host "Error while downloading WinRAR: $_" -ForegroundColor Red
                     Pause
                 }
             } else {
-                Write-Host "Nessun'altra opzione disponibile al momento." -ForegroundColor Magenta
+                Write-Host "No other options available at the moment." -ForegroundColor Magenta
                 Pause
             }
         }
         "15" {
             Clear-Host
+            $installer = Read-Host "Do you want to download and install 7-Zip? (Yes/No)"
+            if ($installer -eq "Yes") {
+                Write-Host "Downloading 7-Zip..." -ForegroundColor Magenta
+                $url = 'https://www.7-zip.org/a/7z2405-x64.exe'
+                $output = "C:\Users\$env:USERNAME\Downloads\7zip-x64-setup.exe"
+                try {
+                    (New-Object System.Net.WebClient).DownloadFile($url, $output)
+                    Write-Host "7-Zip download completed." -ForegroundColor Magenta
+                    Start-Process -FilePath $output
+                    confirmation = Read-Host "7-Zip installer has been launched. Press Enter to continue."
+                } catch {
+                    Write-Host "Error while downloading 7-Zip: $_" -ForegroundColor Red
+                    Pause
+                }
+            } else {
+                Write-Host "No other options available at the moment." -ForegroundColor Magenta
+                Pause
+            }
+        }
+
+        "16" {
+            Clear-Host
             Write-Host ""
             Write-Host "                                    ═══════════════════════════════" -ForegroundColor Red
             Write-Host "                                          Thank you for using      " -ForegroundColor Red  
-            Write-Host "                                      Enhanced Alts Checker v2.0   " -ForegroundColor Red
+            Write-Host "                                      Enhanced Alts Checker v3.0   " -ForegroundColor Red
             Write-Host "                                    ═══════════════════════════════" -ForegroundColor Red
             Write-Host ""
             Write-Host "                                     Goodbye and happy gaming!" -ForegroundColor Magenta
@@ -1549,4 +1572,3 @@ while ($true) {
         }
     }
 }
-
