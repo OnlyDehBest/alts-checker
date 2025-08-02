@@ -40,7 +40,7 @@ A PowerShell utility for analyzing Minecraft accounts stored locally by various 
 
 🔐 **Advanced JWT Decoding**
  - Built-in `Decode-Jwt` function:
-      - Accepts JWT tokens (`accessToken `or` id_token`)
+      - Accepts JWT tokens (`accessToken` or `id_token`)
       - Splits and base64-decodes the payload
       - Returns readable JSON claims in table format
       - Token expiry detection and validation
