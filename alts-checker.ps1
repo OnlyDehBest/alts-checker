@@ -1362,8 +1362,9 @@ while ($true) {
             $folders = @(
                 "$env:APPDATA\.minecraft\logs",
                 "$env:APPDATA\.minecraft\logs\blclient\minecraft\",
-                "$env:USERPROFILE\.lunarclient\offline\1.8\logs",
-                "$env:USERPROFILE\.lunarclient\offline\multiver\logs"
+                "$env:APPDATA\.Salwyrr\logs",
+                "$env:APPDATA\.tlauncher\legacy\Minecraft\game\logs",
+                "$env:USERPROFILE\lunarclient\offline\multiver\logs"
             )
             
             foreach ($folder in $folders) {
@@ -1572,3 +1573,4 @@ while ($true) {
         }
     }
 }
+
